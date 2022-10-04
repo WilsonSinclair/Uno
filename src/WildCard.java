@@ -1,17 +1,10 @@
 public class WildCard extends Card {
 
-    private final WildCardType TYPE;
-
     public WildCard(WildCardType type) {
-        super(Colors.COLORLESS);
-        TYPE = type;
-    }
-
-    public WildCardType getTYPE() {
-        return TYPE;
+        super(Colors.COLORLESS, null, type, null);
     }
 
     public String toString() {
-        return getTYPE().toString();
+        return getWildCardType().toString();
     }
 }
