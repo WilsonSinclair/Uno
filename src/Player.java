@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.Stack;
 
 public class Player {
@@ -22,15 +23,42 @@ public class Player {
 
     public void playCard(Card card, Stack<Card> playedPile) {
         if (playedPile.isEmpty()) return;
-
-        if (card.getColor() == Colors.COLORLESS) {
+        if (card.getWildCardType() == WildCardType.Wild) {
             playedPile.push(card);
-            hand.remove(card);
+            System.out.println("New color? [Red, Yellow, Blue, Green]: ");
+            String color = new Scanner(System.in).nextLine().toUpperCase();
+
+            do {
+                switch (color) {
+                    case "RED" -> {
+                        Game.setCurrentColor(Colors.RED);
+                        break;
+                    }
+                    case "YELLOW" -> {
+                        Game.setCurrentColor(Colors.YELLOW);
+                        break;
+                    }
+                    case "BLUE" -> {
+                        Game.setCurrentColor(Colors.BLUE);
+                        break;
+                    }
+                    case "GREEN" -> {
+                        Game.setCurrentColor(Colors.GREEN);
+                        break;
+                    }
+                    default -> System.out.println("Invalid color!");
+                }
+            } while(!isValidColor(color));
         }
         else if (card.getColor() == playedPile.peek().getColor()) {
             playedPile.push(card);
-            hand.remove(card);
+            Game.setCurrentColor(card.getColor());
         }
+        else if (card.getActionType() == playedPile.peek().getActionType()) {
+            playedPile.push(card);
+            Game.setCurrentColor(card.getColor());
+        }
+        hand.remove(card);
     }
 
     public boolean hasPlayableCard(Card card, Game game) {
@@ -51,6 +79,13 @@ public class Player {
             }
         }
         return false;
+    }
+
+    public boolean isValidColor(String color) {
+       return color.equalsIgnoreCase("RED")
+               || color.equalsIgnoreCase("GREEN")
+               || color.equalsIgnoreCase("BLUE")
+               || color.equalsIgnoreCase("YELLOW");
     }
 
     public void drawFromMainPile(Stack<Card> mainPile) {

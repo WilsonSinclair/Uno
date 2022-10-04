@@ -17,5 +17,4 @@ public class PlayerTest {
         game.setCurrentColor(Colors.COLORLESS);
         assertTrue(game.currentPlayer.hasPlayableCard(new WildCard(WildCardType.Wild), game));
     }
-
 }

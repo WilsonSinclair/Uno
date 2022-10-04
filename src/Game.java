@@ -17,7 +17,7 @@ public class Game {
     public Player[] players;
     public int currentPlayerIndex;
     public Player currentPlayer;
-    public Colors currentColor;
+    public static Colors currentColor;
 
     public boolean winner = false;
 
@@ -97,7 +97,7 @@ public class Game {
         currentPlayer = players[currentPlayerIndex];
     }
 
-    public void setCurrentColor(Colors color) {
+    public static void setCurrentColor(Colors color) {
         currentColor = color;
     }
 
@@ -114,16 +114,16 @@ public class Game {
             currentPlayer = game.currentPlayer;
             playedPile = game.playedPile;
             hand = currentPlayer.getHand();
-            System.out.println("Current card: " + currentCard);
+            System.out.println("\nCurrent card: " + currentCard + "\nCurrent color: " + currentColor);
 
-            while (!currentPlayer.hasPlayableCard(currentCard, game)) {
+            if (!currentPlayer.hasPlayableCard(currentCard, game)) {
                 System.out.println("Drawing a card...");
                 currentPlayer.drawFromMainPile(game.mainPile);
+                continue;
             }
             System.out.println("Current Player: " + currentPlayer);
             System.out.print("Enter index of card to play: ");
             currentPlayer.playCard(hand.get(scanner.nextInt()), playedPile);
-            System.out.println("Current Player: " + currentPlayer);
         }
     }
 }
