@@ -30,22 +30,10 @@ public class Player {
 
             do {
                 switch (color) {
-                    case "RED" -> {
-                        Game.setCurrentColor(Colors.RED);
-                        break;
-                    }
-                    case "YELLOW" -> {
-                        Game.setCurrentColor(Colors.YELLOW);
-                        break;
-                    }
-                    case "BLUE" -> {
-                        Game.setCurrentColor(Colors.BLUE);
-                        break;
-                    }
-                    case "GREEN" -> {
-                        Game.setCurrentColor(Colors.GREEN);
-                        break;
-                    }
+                    case "RED" -> Game.setCurrentColor(Colors.RED);
+                    case "YELLOW" -> Game.setCurrentColor(Colors.YELLOW);
+                    case "BLUE" -> Game.setCurrentColor(Colors.BLUE);
+                    case "GREEN" -> Game.setCurrentColor(Colors.GREEN);
                     default -> System.out.println("Invalid color!");
                 }
             } while(!isValidColor(color));

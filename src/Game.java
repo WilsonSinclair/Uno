@@ -16,7 +16,7 @@ public class Game {
 
     public Player[] players;
     public int currentPlayerIndex;
-    public Player currentPlayer;
+    public static Player currentPlayer, nextPlayer;
     public static Colors currentColor;
 
     public boolean winner = false;
@@ -81,6 +81,7 @@ public class Game {
 
         currentPlayerIndex = 0;
         currentPlayer = players[currentPlayerIndex];
+        nextPlayer = players[currentPlayerIndex + 1];
     }
 
     public Colors getCurrentColor() {
@@ -90,11 +91,11 @@ public class Game {
     public void rotatePlayerTurn() {
         if (currentPlayerIndex == players.length - 1) {
             currentPlayerIndex = 0;
+            nextPlayer = players[currentPlayerIndex + 1];
         }
         else {
-            currentPlayerIndex++;
+            currentPlayer = players[currentPlayerIndex++];
         }
-        currentPlayer = players[currentPlayerIndex];
     }
 
     public static void setCurrentColor(Colors color) {
@@ -105,13 +106,11 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         Game game = new Game(1);
         Card currentCard;
-        Player currentPlayer;
         Stack<Card> playedPile;
         ArrayList<Card> hand;
         while (!game.winner) {
             Runtime.getRuntime().exec("clear"); // clears the terminal in Linux
             currentCard = game.playedPile.peek();
-            currentPlayer = game.currentPlayer;
             playedPile = game.playedPile;
             hand = currentPlayer.getHand();
             System.out.println("\nCurrent card: " + currentCard + "\nCurrent color: " + currentColor);
@@ -124,6 +123,7 @@ public class Game {
             System.out.println("Current Player: " + currentPlayer);
             System.out.print("Enter index of card to play: ");
             currentPlayer.playCard(hand.get(scanner.nextInt()), playedPile);
+            game.rotatePlayerTurn();
         }
     }
 }
