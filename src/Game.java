@@ -126,21 +126,36 @@ public class Game {
         return currentPlayer.getHand().isEmpty();
     }
 
+    // If main pile becomes empty, we should take the top card off of the played pile and put the remaining into the main pile and shuffle.
+    public void resetMainAndPlayedPile() {
+        System.out.println("Reshuffling and resetting main pile...");
+       Card lastPlayedCard = playedPile.pop();
+       mainPile.addAll(playedPile.stream().toList());
+       playedPile.removeAllElements();
+       Collections.shuffle(mainPile);
+       playedPile.push(lastPlayedCard);
+    }
+
     public static void setCurrentColor(Colors color) {
         currentColor = color;
     }
 
     public static void main(String[] args)  {
         Scanner scanner = new Scanner(System.in);
-        Game game = new Game(1);
+        Game game = new Game(2);
         Card currentCard;
         Stack<Card> playedPile;
         ArrayList<Card> hand;
         int choice;
         while (!game.winner) {
+            // if we have drawn all the cards from the main pile, we need to reset and shuffle it.
+            if (game.mainPile.isEmpty()) {
+                game.resetMainAndPlayedPile();
+            }
             currentCard = game.playedPile.peek();
             playedPile = game.playedPile;
             hand = currentPlayer.getHand();
+            System.out.println("\nMain Pile Size: " + game.mainPile.size());
             System.out.println("\nCurrent card: " + currentCard + "\nCurrent color: " + currentColor);
 
             if (!currentPlayer.hasPlayableCard(currentCard, game)) {

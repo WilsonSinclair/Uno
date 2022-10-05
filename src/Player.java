@@ -26,7 +26,8 @@ public class Player {
     public String getName() { return NAME; }
 
     public void populateHand(Stack<Card> pile) {
-        for (int i = 0; i < 1; i++) {
+        // 7 cards for each player
+        for (int i = 0; i < 7; i++) {
             hand.add(pile.pop());
         }
     }
@@ -49,6 +50,9 @@ public class Player {
                 }
             } while(!isValidColor(color));
             if (card.getWildCardType() == WildCardType.DrawFour) {
+                if (game.mainPile.size() < 4) {
+                    game.resetMainAndPlayedPile();
+                }
                 System.out.println("The next player draws 4 cards...");
                 Game.nextPlayer.drawFromMainPile(game.mainPile, 4);
                 game.rotatePlayerTurn();
@@ -58,6 +62,9 @@ public class Player {
             assert card.getActionType().equals(playedPile.peek().getActionType());
             switch (card.getActionType()) {
                 case DrawTwo -> {
+                    if (game.mainPile.size() < 2) {
+                        game.resetMainAndPlayedPile();
+                    }
                     playedPile.push(card);
                     Game.setCurrentColor(card.getColor());
                     System.out.println(Game.nextPlayer.getName() + " draws 2 cards...");
