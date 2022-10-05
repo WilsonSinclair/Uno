@@ -26,7 +26,7 @@ public class Player {
     public String getName() { return NAME; }
 
     public void populateHand(Stack<Card> pile) {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 1; i++) {
             hand.add(pile.pop());
         }
     }
@@ -51,6 +51,7 @@ public class Player {
             if (card.getWildCardType() == WildCardType.DrawFour) {
                 System.out.println("The next player draws 4 cards...");
                 Game.nextPlayer.drawFromMainPile(game.mainPile, 4);
+                game.rotatePlayerTurn();
             }
         }
         else if (card.getActionType() != null) {
@@ -59,7 +60,9 @@ public class Player {
                 case DrawTwo -> {
                     playedPile.push(card);
                     Game.setCurrentColor(card.getColor());
+                    System.out.println(Game.nextPlayer.getName() + " draws 2 cards...");
                     Game.nextPlayer.drawFromMainPile(game.mainPile, 2);
+                    game.rotatePlayerTurn();
                 }
                 case Reverse -> {
                     playedPile.push(card);
@@ -121,26 +124,25 @@ public class Player {
 
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(getName() + ": [");
+        builder.append(getName() + ": [ ");
         for (Card card : hand) {
             switch (card.getColor()) {
                 case RED -> {
-                    builder.append(Game.ANSI_RED + card + Game.ANSI_RESET + " ");
+                    builder.append(Game.ANSI_RED + card + Game.ANSI_RESET + ", ");
                 }
                 case GREEN -> {
-                    builder.append(Game.ANSI_GREEN + card + Game.ANSI_RESET + " ");
+                    builder.append(Game.ANSI_GREEN + card + Game.ANSI_RESET + ", ");
                 }
                 case BLUE -> {
-                    builder.append(Game.ANSI_BLUE + card + Game.ANSI_RESET + " ");
+                    builder.append(Game.ANSI_BLUE + card + Game.ANSI_RESET + ", ");
                 }
                 case YELLOW -> {
-                    builder.append(Game.ANSI_YELLOW + card + Game.ANSI_RESET + " ");
+                    builder.append(Game.ANSI_YELLOW + card + Game.ANSI_RESET + ", ");
                 }
-                default -> builder.append(card + " ");
+                default -> builder.append(card + ", ");
             }
         }
         builder.append("]");
         return builder.toString();
-        //return getName() + ": " + hand.toString();
     }
 }

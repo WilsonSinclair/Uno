@@ -135,7 +135,7 @@ public class Game {
 
     public static void main(String[] args)  {
         Scanner scanner = new Scanner(System.in);
-        Game game = new Game(3);
+        Game game = new Game(2);
         Card currentCard;
         Stack<Card> playedPile;
         ArrayList<Card> hand;
@@ -146,17 +146,21 @@ public class Game {
             System.out.println("\nCurrent card: " + currentCard + "\nCurrent color: " + currentColor);
 
             if (!currentPlayer.hasPlayableCard(currentCard, game)) {
-                System.out.println("Current player has to draw a card...");
+                System.out.println(currentPlayer.getName() + " has to draw a card.");
                 currentPlayer.drawFromMainPile(game.mainPile, 1);
                 game.rotatePlayerTurn();
+                continue;
             }
             System.out.println("Current Player: " + currentPlayer);
             System.out.println("Next Player: " + nextPlayer);
             System.out.print("Enter index of card to play: ");
             currentPlayer.playCard(hand.get(scanner.nextInt()), playedPile);
             game.winner = game.checkForWinner(currentPlayer);
+            if (game.winner) {
+                System.out.println(currentPlayer.getName() + " wins!");
+                System.exit(0);
+            }
             game.rotatePlayerTurn();
         }
-        System.out.println(currentPlayer.getName() + " wins!");
     }
 }
