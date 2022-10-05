@@ -13,12 +13,22 @@ public class Game {
     //The entire deck that is to be shuffled into the mainPile.
     public ArrayList<Card> cards;
 
+    //Player array
     public Player[] players;
+
+    //Index of current player in player array
     public int currentPlayerIndex;
+
+    //The current and next player
     public static Player currentPlayer, nextPlayer;
+
+    //Game's current color
     public static Colors currentColor;
 
+    //Keeps track of whether there is a winner
     public boolean winner = false;
+
+    public boolean turnsReversed = false;
 
     public Game(int numPlayers) {
         if (numPlayers <= 0) {
@@ -76,8 +86,11 @@ public class Game {
 
         //Place one card in the played pile to start.
         playedPile.push(mainPile.pop());
+
+        //Initialize the game's current color
         currentColor = playedPile.peek().getColor();
 
+        //Initialize the first player's turn
         currentPlayerIndex = 0;
         rotatePlayerTurn();
     }
@@ -88,8 +101,17 @@ public class Game {
 
     public void rotatePlayerTurn() {
         // Treating the players array as a circular array.
-        currentPlayer = players[currentPlayerIndex++ % players.length];
+        if (!turnsReversed) {
+            currentPlayer = players[currentPlayerIndex++ % players.length];
+        }
+        else {
+            currentPlayer = players[currentPlayerIndex-- % players.length];
+        }
         nextPlayer = players[currentPlayerIndex % players.length];
+    }
+
+    public void reverseTurnOrder() {
+        turnsReversed = !turnsReversed;
     }
 
     public boolean checkForWinner(Player currentPlayer) {

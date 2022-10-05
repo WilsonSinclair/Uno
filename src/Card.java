@@ -1,7 +1,14 @@
 public class Card {
+    //The color of the card
     private final Colors COLOR;
+
+    //The Action Card type, if applicable
     private final ActionType TYPE;
+
+    //The Wild Card type, if applicable
     private final WildCardType WILD_CARD_TYPE;
+
+    //The number on the card, if applicable
     private final Integer number;
 
     public Card(Colors color, ActionType type, WildCardType wildCardType, Integer number) {
@@ -11,19 +18,22 @@ public class Card {
         this.number = number;
     }
 
-    //Get the color of the Card
+    //Gets the color of the Card
     public Colors getColor() {
         return COLOR;
     }
 
+    //Get the ActionType of the Card
     public ActionType getActionType() {
         return TYPE;
     }
 
+    //Get the WildCardType of the Card
     public WildCardType getWildCardType() {
         return WILD_CARD_TYPE;
     }
 
+    //Get the number of the Card
     public Integer getNumber() {
         return number;
     }

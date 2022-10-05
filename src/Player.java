@@ -5,28 +5,31 @@ import java.util.Stack;
 
 public class Player {
 
+    //The player's hand
     private ArrayList<Card> hand;
-    private String name;
+
+    //The player's in game name
+    private final String NAME;
+
+    //Instance of the current game in progress
+    public Game game;
 
     public Player(Game game, String name) {
         hand = new ArrayList<>();
         this.game = game;
-        this.name = name;
+        NAME = name;
     }
-
-    public Game game;
 
     public ArrayList<Card> getHand() {
         return hand;
     }
-    public String getName() { return name; }
+    public String getName() { return NAME; }
 
     public void populateHand(Stack<Card> pile) {
         for (int i = 0; i < 7; i++) {
             hand.add(pile.pop());
         }
     }
-
 
     public void playCard(Card card, Stack<Card> playedPile) {
         if (playedPile.isEmpty()) return;
@@ -50,7 +53,28 @@ public class Player {
                 Game.nextPlayer.drawFromMainPile(game.mainPile, 4);
             }
         }
-        else if (card.getColor() == playedPile.peek().getColor()) {
+        else if (card.getActionType() != null) {
+            assert card.getActionType().equals(playedPile.peek().getActionType());
+            switch (card.getActionType()) {
+                case DrawTwo -> {
+                    playedPile.push(card);
+                    Game.setCurrentColor(card.getColor());
+                    Game.nextPlayer.drawFromMainPile(game.mainPile, 2);
+                }
+                case Reverse -> {
+                    playedPile.push(card);
+                    Game.setCurrentColor(card.getColor());
+                    game.reverseTurnOrder();
+                }
+                case Skip -> {
+                    playedPile.push(card);
+                    Game.setCurrentColor(card.getColor());
+                    game.rotatePlayerTurn();
+                }
+                default -> System.out.println("Error! Unrecognized ActionType.");
+            }
+        }
+        else if (card.getColor() == Game.currentColor) {
             playedPile.push(card);
             Game.setCurrentColor(card.getColor());
         }
