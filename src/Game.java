@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -81,7 +80,6 @@ public class Game {
 
         currentPlayerIndex = 0;
         currentPlayer = players[currentPlayerIndex];
-        nextPlayer = players[currentPlayerIndex + 1];
     }
 
     public Colors getCurrentColor() {
@@ -91,10 +89,9 @@ public class Game {
     public void rotatePlayerTurn() {
         if (currentPlayerIndex == players.length - 1) {
             currentPlayerIndex = 0;
-            nextPlayer = players[currentPlayerIndex + 1];
         }
         else {
-            currentPlayer = players[currentPlayerIndex++];
+            currentPlayer = players[++currentPlayerIndex];
         }
     }
 
@@ -102,14 +99,13 @@ public class Game {
         currentColor = color;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
         Scanner scanner = new Scanner(System.in);
         Game game = new Game(1);
         Card currentCard;
         Stack<Card> playedPile;
         ArrayList<Card> hand;
         while (!game.winner) {
-            Runtime.getRuntime().exec("clear"); // clears the terminal in Linux
             currentCard = game.playedPile.peek();
             playedPile = game.playedPile;
             hand = currentPlayer.getHand();
