@@ -32,7 +32,7 @@ public class Game {
         //Creating the players.
         players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
-            players[i] = new Player();
+            players[i] = new Player(this);
         }
 
         //Adding the 76 Number Cards (19 of each color)
@@ -79,7 +79,7 @@ public class Game {
         currentColor = playedPile.peek().getColor();
 
         currentPlayerIndex = 0;
-        currentPlayer = players[currentPlayerIndex];
+        rotatePlayerTurn();
     }
 
     public Colors getCurrentColor() {
@@ -87,12 +87,9 @@ public class Game {
     }
 
     public void rotatePlayerTurn() {
-        if (currentPlayerIndex == players.length - 1) {
-            currentPlayerIndex = 0;
-        }
-        else {
-            currentPlayer = players[++currentPlayerIndex];
-        }
+        // Treating the players array as a circular array.
+        currentPlayer = players[currentPlayerIndex++ % players.length];
+        nextPlayer = players[currentPlayerIndex % players.length];
     }
 
     public static void setCurrentColor(Colors color) {
@@ -101,7 +98,7 @@ public class Game {
 
     public static void main(String[] args)  {
         Scanner scanner = new Scanner(System.in);
-        Game game = new Game(1);
+        Game game = new Game(2);
         Card currentCard;
         Stack<Card> playedPile;
         ArrayList<Card> hand;
@@ -112,11 +109,12 @@ public class Game {
             System.out.println("\nCurrent card: " + currentCard + "\nCurrent color: " + currentColor);
 
             if (!currentPlayer.hasPlayableCard(currentCard, game)) {
-                System.out.println("Drawing a card...");
-                currentPlayer.drawFromMainPile(game.mainPile);
-                continue;
+                System.out.println("Current player has to draw a card...");
+                currentPlayer.drawFromMainPile(game.mainPile, 1);
+                game.rotatePlayerTurn();
             }
             System.out.println("Current Player: " + currentPlayer);
+            System.out.println("Next Player: " + nextPlayer);
             System.out.print("Enter index of card to play: ");
             currentPlayer.playCard(hand.get(scanner.nextInt()), playedPile);
             game.rotatePlayerTurn();

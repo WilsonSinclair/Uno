@@ -7,9 +7,12 @@ public class Player {
 
     private ArrayList<Card> hand;
 
-    public Player() {
+    public Player(Game game) {
         hand = new ArrayList<>();
+        this.game = game;
     }
+
+    public Game game;
 
     public ArrayList<Card> getHand() {
         return hand;
@@ -21,22 +24,28 @@ public class Player {
         }
     }
 
+
     public void playCard(Card card, Stack<Card> playedPile) {
         if (playedPile.isEmpty()) return;
-        if (card.getWildCardType() == WildCardType.Wild) {
+        if (card.getWildCardType() == WildCardType.Wild || card.getWildCardType() == WildCardType.DrawFour) {
             playedPile.push(card);
             System.out.println("New color? [Red, Yellow, Blue, Green]: ");
-            String color = new Scanner(System.in).nextLine().toUpperCase();
+            String color;
 
             do {
+                color = new Scanner(System.in).nextLine().toUpperCase();
                 switch (color) {
                     case "RED" -> Game.setCurrentColor(Colors.RED);
                     case "YELLOW" -> Game.setCurrentColor(Colors.YELLOW);
                     case "BLUE" -> Game.setCurrentColor(Colors.BLUE);
                     case "GREEN" -> Game.setCurrentColor(Colors.GREEN);
-                    default -> System.out.println("Invalid color!");
+                    default -> System.out.println("Invalid color! Choose again!");
                 }
             } while(!isValidColor(color));
+            if (card.getWildCardType() == WildCardType.DrawFour) {
+                System.out.println("The next player draws 4 cards...");
+                Game.nextPlayer.drawFromMainPile(game.mainPile, 4);
+            }
         }
         else if (card.getColor() == playedPile.peek().getColor()) {
             playedPile.push(card);
@@ -52,7 +61,7 @@ public class Player {
     public boolean hasPlayableCard(Card card, Game game) {
         //If the first card in the game is a wild card or draw 4.
         if (game.getCurrentColor() == Colors.COLORLESS) { return true; }
-        Colors color = card.getColor();
+        Colors color = game.getCurrentColor();
         ActionType type = card.getActionType();
         Integer number = card.getNumber();
         for (Card c : hand) {
@@ -76,8 +85,11 @@ public class Player {
                || color.equalsIgnoreCase("YELLOW");
     }
 
-    public void drawFromMainPile(Stack<Card> mainPile) {
-        hand.add(mainPile.pop());
+    public void drawFromMainPile(Stack<Card> mainPile, int numberToDraw) {
+        while (numberToDraw != 0) {
+            hand.add(mainPile.pop());
+            numberToDraw--;
+        }
     }
 
     public String toString() {
