@@ -114,9 +114,6 @@ public class Game {
         }
         else {
             currentPlayer = players[currentPlayerIndex-- % players.length];
-            // [1, 2]
-            //  ^
-            // []
         }
         nextPlayer = players[currentPlayerIndex % players.length];
     }
@@ -135,10 +132,11 @@ public class Game {
 
     public static void main(String[] args)  {
         Scanner scanner = new Scanner(System.in);
-        Game game = new Game(2);
+        Game game = new Game(1);
         Card currentCard;
         Stack<Card> playedPile;
         ArrayList<Card> hand;
+        int choice;
         while (!game.winner) {
             currentCard = game.playedPile.peek();
             playedPile = game.playedPile;
@@ -152,9 +150,12 @@ public class Game {
                 continue;
             }
             System.out.println("Current Player: " + currentPlayer);
-            System.out.println("Next Player: " + nextPlayer);
-            System.out.print("Enter index of card to play: ");
-            currentPlayer.playCard(hand.get(scanner.nextInt()), playedPile);
+            System.out.println("Next Player: " + nextPlayer.getName());
+            do {
+                System.out.print("Enter index of card to play: ");
+                choice = scanner.nextInt();
+            } while (choice < 0 || choice >= currentPlayer.getHand().size());
+            currentPlayer.playCard(hand.get(choice), playedPile);
             game.winner = game.checkForWinner(currentPlayer);
             if (game.winner) {
                 System.out.println(currentPlayer.getName() + " wins!");
