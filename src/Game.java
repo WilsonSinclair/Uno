@@ -28,7 +28,15 @@ public class Game {
     //Keeps track of whether there is a winner
     public boolean winner = false;
 
+    //Decides whether turns are reversed or not
     public boolean turnsReversed = false;
+
+    //Colors for console output
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_GREEN = "\u001B[32m";
 
     public Game(int numPlayers) {
         if (numPlayers <= 0) {
@@ -106,6 +114,9 @@ public class Game {
         }
         else {
             currentPlayer = players[currentPlayerIndex-- % players.length];
+            // [1, 2]
+            //  ^
+            // []
         }
         nextPlayer = players[currentPlayerIndex % players.length];
     }
@@ -124,7 +135,7 @@ public class Game {
 
     public static void main(String[] args)  {
         Scanner scanner = new Scanner(System.in);
-        Game game = new Game(2);
+        Game game = new Game(3);
         Card currentCard;
         Stack<Card> playedPile;
         ArrayList<Card> hand;

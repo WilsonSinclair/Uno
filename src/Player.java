@@ -120,6 +120,27 @@ public class Player {
     }
 
     public String toString() {
-        return getName() + ": " + hand.toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append(getName() + ": [");
+        for (Card card : hand) {
+            switch (card.getColor()) {
+                case RED -> {
+                    builder.append(Game.ANSI_RED + card + Game.ANSI_RESET + " ");
+                }
+                case GREEN -> {
+                    builder.append(Game.ANSI_GREEN + card + Game.ANSI_RESET + " ");
+                }
+                case BLUE -> {
+                    builder.append(Game.ANSI_BLUE + card + Game.ANSI_RESET + " ");
+                }
+                case YELLOW -> {
+                    builder.append(Game.ANSI_YELLOW + card + Game.ANSI_RESET + " ");
+                }
+                default -> builder.append(card + " ");
+            }
+        }
+        builder.append("]");
+        return builder.toString();
+        //return getName() + ": " + hand.toString();
     }
 }
