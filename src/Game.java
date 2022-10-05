@@ -32,7 +32,7 @@ public class Game {
         //Creating the players.
         players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
-            players[i] = new Player(this);
+            players[i] = new Player(this, "Player " + (i + 1));
         }
 
         //Adding the 76 Number Cards (19 of each color)
@@ -92,6 +92,10 @@ public class Game {
         nextPlayer = players[currentPlayerIndex % players.length];
     }
 
+    public boolean checkForWinner(Player currentPlayer) {
+        return currentPlayer.getHand().isEmpty();
+    }
+
     public static void setCurrentColor(Colors color) {
         currentColor = color;
     }
@@ -117,7 +121,9 @@ public class Game {
             System.out.println("Next Player: " + nextPlayer);
             System.out.print("Enter index of card to play: ");
             currentPlayer.playCard(hand.get(scanner.nextInt()), playedPile);
+            game.winner = game.checkForWinner(currentPlayer);
             game.rotatePlayerTurn();
         }
+        System.out.println(currentPlayer.getName() + " wins!");
     }
 }

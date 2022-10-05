@@ -6,10 +6,12 @@ import java.util.Stack;
 public class Player {
 
     private ArrayList<Card> hand;
+    private String name;
 
-    public Player(Game game) {
+    public Player(Game game, String name) {
         hand = new ArrayList<>();
         this.game = game;
+        this.name = name;
     }
 
     public Game game;
@@ -17,6 +19,7 @@ public class Player {
     public ArrayList<Card> getHand() {
         return hand;
     }
+    public String getName() { return name; }
 
     public void populateHand(Stack<Card> pile) {
         for (int i = 0; i < 7; i++) {
@@ -93,6 +96,6 @@ public class Player {
     }
 
     public String toString() {
-        return hand.toString();
+        return getName() + ": " + hand.toString();
     }
 }
