@@ -127,8 +127,11 @@ public class Game {
         turnsReversed = !turnsReversed;
     }
 
-    public boolean checkForWinner(Player currentPlayer) {
-        return currentPlayer.getHand().isEmpty();
+    public boolean checkForWinner() {
+        for (Player player : players) {
+            if (player.getHand().isEmpty()) return true;
+        }
+        return false;
     }
 
     // If main pile becomes empty, we should take the top card off of the played pile and put the remaining into the main pile and shuffle.
@@ -183,7 +186,7 @@ public class Game {
                 choice = scanner.nextInt();
             } while (choice < 0 || choice >= currentPlayer.getHand().size());
             currentPlayer.playCard(hand.get(choice), playedPile);
-            game.winner = game.checkForWinner(currentPlayer);
+            game.winner = game.checkForWinner();
             if (game.winner) {
                 System.out.println(currentPlayer.getName() + " wins!");
                 System.exit(0);
