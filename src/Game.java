@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.stream.Stream;
 
 public class Game {
 
@@ -31,6 +32,9 @@ public class Game {
     //Decides whether turns are reversed or not
     public boolean turnsReversed = false;
 
+    //Turn count for the game
+    public int turnCount;
+
     //Colors for console output
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_YELLOW = "\u001B[33m";
@@ -46,6 +50,7 @@ public class Game {
         cards = new ArrayList<>();
         mainPile = new Stack<>();
         playedPile = new Stack<>();
+        turnCount = 0;
 
         //Creating the players.
         players = new Player[numPlayers];
@@ -147,7 +152,13 @@ public class Game {
         Stack<Card> playedPile;
         ArrayList<Card> hand;
         int choice;
+
+        System.out.println("Starting a new game with " + game.players.length + " players.");
+        Stream.of(game.players).forEach(p -> System.out.print(p.getName() + " "));
+
         while (!game.winner) {
+            game.turnCount++;
+
             // if we have drawn all the cards from the main pile, we need to reset and shuffle it.
             if (game.mainPile.isEmpty()) {
                 game.resetMainAndPlayedPile();
@@ -156,6 +167,7 @@ public class Game {
             playedPile = game.playedPile;
             hand = currentPlayer.getHand();
             System.out.println("\nMain Pile Size: " + game.mainPile.size());
+            System.out.println("\nTurn: " + game.turnCount);
             System.out.println("\nCurrent card: " + currentCard + "\nCurrent color: " + currentColor);
 
             if (!currentPlayer.hasPlayableCard(currentCard, game)) {

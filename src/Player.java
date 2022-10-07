@@ -74,7 +74,8 @@ public class Player {
                 case Reverse -> {
                     playedPile.push(card);
                     Game.setCurrentColor(card.getColor());
-                    game.reverseTurnOrder();
+                    //reversing the turn order is broken at the moment
+                    //game.reverseTurnOrder();
                 }
                 case Skip -> {
                     playedPile.push(card);
