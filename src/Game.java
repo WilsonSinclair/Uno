@@ -26,9 +26,6 @@ public class Game {
     //Keeps track of whether there is a winner
     public boolean winner = false;
 
-    //Decides whether turns are reversed or not
-    public boolean turnsReversed = false;
-
     //Turn count for the game
     public int turnCount;
 
@@ -140,6 +137,14 @@ public class Game {
         currentColor = color;
     }
 
+    public static boolean isValidCard(Card card, Card currentCard) {
+        if (card.getColor() == currentColor) return true;
+        else if (card.getClass() == WildCard.class) return true;
+        else if (card.getClass() == ActionCard.class) return card.getActionType() == currentCard.getActionType();
+        else if (card.getClass() == NumberCard.class) return card.getNumber().equals(currentCard.getNumber());
+        else return false;
+    }
+
     public static void main(String[] args)  {
         Scanner scanner = new Scanner(System.in);
         Game game = new Game(2);
@@ -176,7 +181,7 @@ public class Game {
             do {
                 System.out.print("Enter index of card to play: ");
                 choice = scanner.nextInt();
-            } while (choice < 0 || choice >= currentPlayer.getHand().size());
+            } while (choice < 0 || choice >= currentPlayer.getHand().size() || !isValidCard(currentPlayer.getHand().get(choice), currentCard));
             currentPlayer.playCard(hand.get(choice), playedPile);
             game.winner = game.checkForWinner();
             if (game.winner) {

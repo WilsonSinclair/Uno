@@ -74,7 +74,6 @@ public class Player {
                 case Reverse -> {
                     playedPile.push(card);
                     Game.setCurrentColor(card.getColor());
-                    //trying this
                     game.reverseTurnOrder();
                 }
                 case Skip -> {
@@ -93,7 +92,6 @@ public class Player {
             playedPile.push(card);
             Game.setCurrentColor(card.getColor());
         }
-
         hand.remove(card);
     }
 
