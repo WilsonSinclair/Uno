@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Game {
@@ -114,17 +111,12 @@ public class Game {
 
     public void rotatePlayerTurn() {
         // Treating the players array as a circular array.
-        if (!turnsReversed) {
-            currentPlayer = players[currentPlayerIndex++ % players.length];
-        }
-        else {
-            currentPlayer = players[currentPlayerIndex-- % players.length];
-        }
+        currentPlayer = players[currentPlayerIndex++ % players.length];
         nextPlayer = players[currentPlayerIndex % players.length];
     }
 
     public void reverseTurnOrder() {
-        turnsReversed = !turnsReversed;
+        Collections.reverse(Arrays.asList(players));
     }
 
     public boolean checkForWinner() {
@@ -189,6 +181,7 @@ public class Game {
             game.winner = game.checkForWinner();
             if (game.winner) {
                 System.out.println(currentPlayer.getName() + " wins!");
+                scanner.close();
                 System.exit(0);
             }
             game.rotatePlayerTurn();
