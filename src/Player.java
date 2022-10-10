@@ -53,7 +53,7 @@ public class Player {
                 if (game.mainPile.size() < 4) {
                     game.resetMainAndPlayedPile();
                 }
-                System.out.println("The next player draws 4 cards...");
+                System.out.println(game.curPlayerNode.player.getName() + " draws 4 cards.");
                 Game.nextPlayer.drawFromMainPile(game.mainPile, 4);
                 game.rotatePlayerTurn();
             }

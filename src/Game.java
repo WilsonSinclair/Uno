@@ -137,7 +137,11 @@ public class Game {
     }
 
     public boolean checkForWinner(DoubleLinkedPlayerList.Node node) {
-        return node.player.getHand().isEmpty();
+        for (int i = 0; i < players.getSize(); i++) {
+            if (node.player.getHand().isEmpty()) return true;
+            node = node.nextNode;
+        }
+        return false;
     }
 
     // If main pile becomes empty, we should take the top card off of the played pile and put the remaining into the main pile and shuffle.
