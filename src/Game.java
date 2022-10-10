@@ -136,12 +136,8 @@ public class Game {
         turnsReversed = !turnsReversed;
     }
 
-    public boolean checkForWinner() {
-        DoubleLinkedPlayerList.Node playerNode = curPlayerNode;
-        for (int i = 0; i < players.getSize(); i++) {
-            if (playerNode.player.getHand().isEmpty()) return true;
-        }
-        return false;
+    public boolean checkForWinner(DoubleLinkedPlayerList.Node node) {
+        return node.player.getHand().isEmpty();
     }
 
     // If main pile becomes empty, we should take the top card off of the played pile and put the remaining into the main pile and shuffle.
@@ -207,7 +203,7 @@ public class Game {
             } while (choice < 0 || choice >= currentPlayer.getHand().size() || !isValidCard(currentPlayer.getHand().get(choice), currentCard));
 
             currentPlayer.playCard(hand.get(choice), playedPile);
-            game.winner = game.checkForWinner();
+            game.winner = game.checkForWinner(game.curPlayerNode);
 
             if (game.winner) {
                 System.out.println(currentPlayer.getName() + " wins!");
