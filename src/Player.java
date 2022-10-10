@@ -74,7 +74,12 @@ public class Player {
                 case Reverse -> {
                     playedPile.push(card);
                     Game.setCurrentColor(card.getColor());
-                    game.reverseTurnOrder();
+                    if (game.players.getSize() > 2) {
+                        game.reverseTurnOrder();
+                    }
+                    else {
+                        game.rotatePlayerTurn();
+                    }
                 }
                 case Skip -> {
                     playedPile.push(card);
@@ -141,10 +146,10 @@ public class Player {
                     builder.append(Game.ANSI_GREEN + card + Game.ANSI_RESET + ", ");
                 }
                 case BLUE -> {
-                    builder.append(Game.ANSI_BLUE + card + Game.ANSI_RESET + ", ");
+                    builder.append(Game.ANSI_BLUE + card + Game.ANSI_RESET +  ", ");
                 }
                 case YELLOW -> {
-                    builder.append(Game.ANSI_YELLOW + card + Game.ANSI_RESET + ", ");
+                    builder.append(Game.ANSI_YELLOW + card + Game.ANSI_RESET +  ", ");
                 }
                 default -> builder.append(card + ", ");
             }

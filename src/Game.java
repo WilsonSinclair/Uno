@@ -1,10 +1,10 @@
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Game {
 
     //The main pile cards are drawn from.
     public Stack<Card> mainPile;
+
     //The pile of cards that have been played already.
     public Stack<Card> playedPile;
 
@@ -12,12 +12,11 @@ public class Game {
     public ArrayList<Card> cards;
 
     //Player array
-    public Player[] players;
-
-    //Index of current player in player array
-    public int currentPlayerIndex;
+    //public Player[] players;
+    public DoubleLinkedPlayerList players;
 
     //The current and next player
+    public DoubleLinkedPlayerList.Node curPlayerNode, nextPlayerNode;
     public static Player currentPlayer, nextPlayer;
 
     //Game's current color
@@ -28,6 +27,9 @@ public class Game {
 
     //Turn count for the game
     public int turnCount;
+
+    //Whether turns are being played in reverse order
+    public boolean turnsReversed = false;
 
     //Colors for console output
     public static final String ANSI_RESET = "\u001B[0m";
@@ -47,10 +49,14 @@ public class Game {
         turnCount = 0;
 
         //Creating the players.
-        players = new Player[numPlayers];
+        players = new DoubleLinkedPlayerList();
         for (int i = 0; i < numPlayers; i++) {
-            players[i] = new Player(this, "Player " + (i + 1));
+            players.addNode(new Player(this, "Player " + (i + 1)));
         }
+
+        //wrap around
+        players.getHead().previousNode = players.getTail();
+        players.getTail().nextNode = players.getHead();
 
         //Adding the 76 Number Cards (19 of each color)
         for (Colors color : Colors.values()) {
@@ -87,8 +93,10 @@ public class Game {
         }
 
         //Initialize the players' hands.
-        for (Player player : players) {
-            player.populateHand(mainPile);
+        DoubleLinkedPlayerList.Node curNode = players.getHead();
+        for (int i = 0; i < players.getSize(); i++) {
+            curNode.player.populateHand(mainPile);
+            curNode = curNode.nextNode;
         }
 
         //Place one card in the played pile to start.
@@ -97,9 +105,13 @@ public class Game {
         //Initialize the game's current color
         currentColor = playedPile.peek().getColor();
 
-        //Initialize the first player's turn
-        currentPlayerIndex = 0;
-        rotatePlayerTurn();
+        //Initialize the first and next player
+        curPlayerNode = players.getHead();
+        nextPlayerNode = curPlayerNode.nextNode;
+
+        currentPlayer = curPlayerNode.player;
+        nextPlayer = nextPlayerNode.player;
+
     }
 
     public Colors getCurrentColor() {
@@ -107,18 +119,27 @@ public class Game {
     }
 
     public void rotatePlayerTurn() {
-        // Treating the players array as a circular array.
-        currentPlayer = players[currentPlayerIndex++ % players.length];
-        nextPlayer = players[currentPlayerIndex % players.length];
+
+        if (!turnsReversed) {
+            curPlayerNode = curPlayerNode.nextNode;
+            nextPlayerNode = curPlayerNode.nextNode;
+        }
+        else {
+            curPlayerNode = curPlayerNode.previousNode;
+            nextPlayerNode = curPlayerNode.previousNode;
+        }
+        currentPlayer = curPlayerNode.player;
+        nextPlayer = nextPlayerNode.player;
     }
 
     public void reverseTurnOrder() {
-        Collections.reverse(Arrays.asList(players));
+        turnsReversed = !turnsReversed;
     }
 
     public boolean checkForWinner() {
-        for (Player player : players) {
-            if (player.getHand().isEmpty()) return true;
+        DoubleLinkedPlayerList.Node playerNode = curPlayerNode;
+        for (int i = 0; i < players.getSize(); i++) {
+            if (playerNode.player.getHand().isEmpty()) return true;
         }
         return false;
     }
@@ -126,11 +147,11 @@ public class Game {
     // If main pile becomes empty, we should take the top card off of the played pile and put the remaining into the main pile and shuffle.
     public void resetMainAndPlayedPile() {
         System.out.println("Reshuffling and resetting main pile...");
-       Card lastPlayedCard = playedPile.pop();
-       mainPile.addAll(playedPile.stream().toList());
-       playedPile.removeAllElements();
-       Collections.shuffle(mainPile);
-       playedPile.push(lastPlayedCard);
+        Card lastPlayedCard = playedPile.pop();
+        mainPile.addAll(playedPile.stream().toList());
+        playedPile.removeAllElements();
+        Collections.shuffle(mainPile);
+        playedPile.push(lastPlayedCard);
     }
 
     public static void setCurrentColor(Colors color) {
@@ -138,7 +159,7 @@ public class Game {
     }
 
     public static boolean isValidCard(Card card, Card currentCard) {
-        if (card.getColor() == currentColor) return true;
+        if (card.getColor() == currentColor || currentColor == Colors.COLORLESS) return true;
         else if (card.getClass() == WildCard.class) return true;
         else if (card.getClass() == ActionCard.class) return card.getActionType() == currentCard.getActionType();
         else if (card.getClass() == NumberCard.class) return card.getNumber().equals(currentCard.getNumber());
@@ -147,14 +168,14 @@ public class Game {
 
     public static void main(String[] args)  {
         Scanner scanner = new Scanner(System.in);
-        Game game = new Game(2);
+        System.out.print("Number of Players: ");
+        Game game = new Game(scanner.nextInt());
         Card currentCard;
         Stack<Card> playedPile;
         ArrayList<Card> hand;
         int choice;
 
-        System.out.println("Starting a new game with " + game.players.length + " players.");
-        Stream.of(game.players).forEach(p -> System.out.print(p.getName() + " "));
+        System.out.println("Starting a new game with " + game.players.getSize() + " players.");
 
         while (!game.winner) {
             game.turnCount++;
@@ -176,14 +197,18 @@ public class Game {
                 game.rotatePlayerTurn();
                 continue;
             }
+
             System.out.println("Current Player: " + currentPlayer);
             System.out.println("Next Player: " + nextPlayer.getName());
+
             do {
                 System.out.print("Enter index of card to play: ");
                 choice = scanner.nextInt();
             } while (choice < 0 || choice >= currentPlayer.getHand().size() || !isValidCard(currentPlayer.getHand().get(choice), currentCard));
+
             currentPlayer.playCard(hand.get(choice), playedPile);
             game.winner = game.checkForWinner();
+
             if (game.winner) {
                 System.out.println(currentPlayer.getName() + " wins!");
                 scanner.close();
