@@ -11,8 +11,7 @@ public class Game {
     //The entire deck that is to be shuffled into the mainPile.
     public ArrayList<Card> cards;
 
-    //Player array
-    //public Player[] players;
+    //Player list, doubly linked, with the ends linking to each other
     public DoubleLinkedPlayerList players;
 
     //The current and next player
