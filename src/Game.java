@@ -19,7 +19,7 @@ public class Game {
     public static Player currentPlayer, nextPlayer;
 
     //Game's current color
-    public static Colors currentColor;
+    private static Colors currentColor;
 
     //Keeps track of whether there is a winner
     public boolean winner = false;

@@ -89,7 +89,7 @@ public class Player {
                 default -> System.out.println("Error! Unrecognized ActionType.");
             }
         }
-        else if (card.getColor() == Game.currentColor || Game.currentColor == Colors.COLORLESS) {
+        else if (card.getColor() == game.getCurrentColor() || game.getCurrentColor() == Colors.COLORLESS) {
             playedPile.push(card);
             Game.setCurrentColor(card.getColor());
         }
