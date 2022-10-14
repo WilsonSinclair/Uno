@@ -165,35 +165,32 @@ public class Game {
         else return false;
     }
 
-    public static void main(String[] args)  {
+    //main game loop
+    public void play() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Number of Players: ");
-        Game game = new Game(scanner.nextInt());
         Card currentCard;
-        Stack<Card> playedPile;
         ArrayList<Card> hand;
         int choice;
 
-        System.out.println("Starting a new game with " + game.players.getSize() + " players.");
+        System.out.println("Starting a new game with " + players.getSize() + " players.");
 
-        while (!game.winner) {
-            game.turnCount++;
+        while (!winner) {
+            turnCount++;
 
             // if we have drawn all the cards from the main pile, we need to reset and shuffle it.
-            if (game.mainPile.isEmpty()) {
-                game.resetMainAndPlayedPile();
+            if (mainPile.isEmpty()) {
+                resetMainAndPlayedPile();
             }
-            currentCard = game.playedPile.peek();
-            playedPile = game.playedPile;
+            currentCard = playedPile.peek();
             hand = currentPlayer.getHand();
-            System.out.println("\nMain Pile Size: " + game.mainPile.size());
-            System.out.println("\nTurn: " + game.turnCount);
+            System.out.println("\nMain Pile Size: " + mainPile.size());
+            System.out.println("\nTurn: " + turnCount);
             System.out.println("\nCurrent card: " + currentCard + "\nCurrent color: " + currentColor);
 
-            if (!currentPlayer.hasPlayableCard(currentCard, game)) {
+            if (!currentPlayer.hasPlayableCard(currentCard, this)) {
                 System.out.println(currentPlayer.getName() + " has to draw a card.");
-                currentPlayer.drawFromMainPile(game.mainPile, 1);
-                game.rotatePlayerTurn();
+                currentPlayer.drawFromMainPile(mainPile, 1);
+                rotatePlayerTurn();
                 continue;
             }
 
@@ -206,14 +203,14 @@ public class Game {
             } while (choice < 0 || choice >= currentPlayer.getHand().size() || !isValidCard(currentPlayer.getHand().get(choice), currentCard));
 
             currentPlayer.playCard(hand.get(choice), playedPile);
-            game.winner = game.checkForWinner(game.curPlayerNode);
+            winner = checkForWinner(curPlayerNode);
 
-            if (game.winner) {
+            if (winner) {
                 System.out.println(currentPlayer.getName() + " wins!");
                 scanner.close();
                 System.exit(0);
             }
-            game.rotatePlayerTurn();
+            rotatePlayerTurn();
         }
     }
 }

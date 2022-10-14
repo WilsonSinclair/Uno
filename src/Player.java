@@ -50,9 +50,6 @@ public class Player {
                 }
             } while(!isValidColor(color));
             if (card.getWildCardType() == WildCardType.DrawFour) {
-                if (game.mainPile.size() < 4) {
-                    game.resetMainAndPlayedPile();
-                }
                 System.out.println(game.curPlayerNode.player.getName() + " draws 4 cards.");
                 Game.nextPlayer.drawFromMainPile(game.mainPile, 4);
                 game.rotatePlayerTurn();
@@ -62,9 +59,6 @@ public class Player {
             assert card.getActionType().equals(playedPile.peek().getActionType());
             switch (card.getActionType()) {
                 case DrawTwo -> {
-                    if (game.mainPile.size() < 2) {
-                        game.resetMainAndPlayedPile();
-                    }
                     playedPile.push(card);
                     Game.setCurrentColor(card.getColor());
                     System.out.println(Game.nextPlayer.getName() + " draws 2 cards...");
@@ -128,6 +122,10 @@ public class Player {
     }
 
     public void drawFromMainPile(Stack<Card> mainPile, int numberToDraw) {
+        if (game.mainPile.size() < numberToDraw) {
+            game.resetMainAndPlayedPile();
+        }
+
         while (numberToDraw != 0) {
             hand.add(mainPile.pop());
             numberToDraw--;
