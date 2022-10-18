@@ -4,6 +4,8 @@ public class Driver {
 
     public static void main(String[] args) {
         System.out.print("Number of Players: ");
-        new Game(new Scanner(System.in).nextInt()).play();
+        Scanner scanner = new Scanner(System.in);
+        new Game(scanner.nextInt()).play();
+        scanner.close();
     }
 }
