@@ -158,7 +158,7 @@ public class Game {
     }
 
     public static boolean isValidCard(Card card, Card currentCard) {
-        if (card.getColor() == currentColor || currentColor == Colors.COLORLESS) return true;
+        if (card.getColor() == currentColor || currentColor == Colors.COLORLESS || card.getColor() == currentCard.getColor()) return true;
         else if (card.getClass() == WildCard.class) return true;
         else if (card.getClass() == ActionCard.class) return card.getActionType() == currentCard.getActionType();
         else if (card.getClass() == NumberCard.class) return card.getNumber().equals(currentCard.getNumber());

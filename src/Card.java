@@ -11,9 +11,9 @@ public class Card {
     //The number on the card, if applicable
     private final Integer number;
 
-    public Card(Colors color, ActionType type, WildCardType wildCardType, Integer number) {
+    public Card(Colors color, ActionType actionCardType, WildCardType wildCardType, Integer number) {
         COLOR = color;
-        ACTION_TYPE = type;
+        ACTION_TYPE = actionCardType;
         WILD_CARD_TYPE = wildCardType;
         this.number = number;
     }

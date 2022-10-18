@@ -1,6 +1,6 @@
 import org.junit.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
 
@@ -20,7 +20,14 @@ public class GameTest {
         game.resetMainAndPlayedPile();
         assertEquals(game.playedPile.size(), 1);
         assertEquals(game.mainPile.size(), 100);
+    }
 
+    @Test
+    public void isValidCardTest() {
+        assertTrue(Game.isValidCard(new WildCard(WildCardType.Wild), new NumberCard(Colors.BLUE, 0)));
+        assertTrue(Game.isValidCard(new WildCard(WildCardType.DrawFour), new NumberCard(Colors.BLUE, 0)));
+        assertTrue(Game.isValidCard(new NumberCard(Colors.BLUE, 8), new NumberCard(Colors.BLUE, 0)));
+        assertFalse(Game.isValidCard(new ActionCard(ActionType.Reverse, Colors.RED), new NumberCard(Colors.GREEN, 2)));
     }
     
 }
