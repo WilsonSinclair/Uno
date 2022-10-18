@@ -49,6 +49,5 @@ public class PlayerTest {
 
         // one card is put into the played pile and seven more are given to the player's hand.
         assertEquals(96, game.mainPile.size());
-
     }
 }

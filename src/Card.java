@@ -3,7 +3,7 @@ public class Card {
     private final Colors COLOR;
 
     //The Action Card type, if applicable
-    private final ActionType TYPE;
+    private final ActionType ACTION_TYPE;
 
     //The Wild Card type, if applicable
     private final WildCardType WILD_CARD_TYPE;
@@ -13,7 +13,7 @@ public class Card {
 
     public Card(Colors color, ActionType type, WildCardType wildCardType, Integer number) {
         COLOR = color;
-        TYPE = type;
+        ACTION_TYPE = type;
         WILD_CARD_TYPE = wildCardType;
         this.number = number;
     }
@@ -25,7 +25,7 @@ public class Card {
 
     //Get the ActionType of the Card
     public ActionType getActionType() {
-        return TYPE;
+        return ACTION_TYPE;
     }
 
     //Get the WildCardType of the Card
