@@ -14,6 +14,8 @@ public class Player {
     //Instance of the current game in progress
     public Game game;
 
+    private Scanner scanner;
+
     public Player(Game game, String name) {
         hand = new ArrayList<>();
         this.game = game;
@@ -40,7 +42,8 @@ public class Player {
             String color;
 
             do {
-                color = new Scanner(System.in).nextLine().toUpperCase();
+                scanner = new Scanner(System.in);
+                color = scanner.nextLine().toUpperCase();
                 switch (color) {
                     case "RED" -> Game.setCurrentColor(Colors.RED);
                     case "YELLOW" -> Game.setCurrentColor(Colors.YELLOW);
@@ -49,6 +52,7 @@ public class Player {
                     default -> System.out.println("Invalid color! Choose again!");
                 }
             } while(!isValidColor(color));
+
             if (card.getWildCardType() == WildCardType.DrawFour) {
                 System.out.println(game.curPlayerNode.player.getName() + " draws 4 cards.");
                 Game.nextPlayer.drawFromMainPile(game.mainPile, 4);
