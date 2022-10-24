@@ -29,5 +29,4 @@ public class GameTest {
         assertTrue(Game.isValidCard(new NumberCard(Colors.BLUE, 8), new NumberCard(Colors.BLUE, 0)));
         assertFalse(Game.isValidCard(new ActionCard(ActionType.Reverse, Colors.RED), new NumberCard(Colors.GREEN, 2)));
     }
-    
 }
