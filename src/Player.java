@@ -14,8 +14,6 @@ public class Player {
     //Instance of the current game in progress
     public Game game;
 
-    private Scanner scanner;
-
     public Player(Game game, String name) {
         hand = new ArrayList<>();
         this.game = game;
@@ -42,7 +40,7 @@ public class Player {
             String color;
 
             do {
-                scanner = new Scanner(System.in);
+                Scanner scanner = new Scanner(System.in);
                 color = scanner.nextLine().toUpperCase();
                 switch (color) {
                     case "RED" -> Game.setCurrentColor(Colors.RED);
@@ -138,23 +136,28 @@ public class Player {
 
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(getName() + ": [ ");
+        int index = 0;
+
+        builder.append(getName()).append(": [ ");
         for (Card card : hand) {
             switch (card.getColor()) {
                 case RED -> {
-                    builder.append(Game.ANSI_RED + card + Game.ANSI_RESET + ", ");
+                    builder.append(Game.ANSI_RED).append(card).append(Game.ANSI_RESET);
                 }
                 case GREEN -> {
-                    builder.append(Game.ANSI_GREEN + card + Game.ANSI_RESET + ", ");
+                    builder.append(Game.ANSI_GREEN).append(card).append(Game.ANSI_RESET);
                 }
                 case BLUE -> {
-                    builder.append(Game.ANSI_BLUE + card + Game.ANSI_RESET +  ", ");
+                    builder.append(Game.ANSI_BLUE).append(card).append(Game.ANSI_RESET);
                 }
                 case YELLOW -> {
-                    builder.append(Game.ANSI_YELLOW + card + Game.ANSI_RESET +  ", ");
+                    builder.append(Game.ANSI_YELLOW).append(card).append(Game.ANSI_RESET);
                 }
-                default -> builder.append(card + ", ");
+                default -> builder.append(card);
             }
+            builder.append(" (");
+            builder.append(index++);
+            builder.append(") ");
         }
         builder.append("]");
         return builder.toString();
