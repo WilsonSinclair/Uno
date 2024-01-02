@@ -6,7 +6,7 @@ import java.util.Stack;
 public class Player {
 
     //The player's hand
-    private ArrayList<Card> hand;
+    private final ArrayList<Card> hand;
 
     //The player's in game name
     private final String NAME;

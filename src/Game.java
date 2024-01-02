@@ -21,9 +21,6 @@ public class Game {
     //Game's current color
     private static Colors currentColor;
 
-    //Keeps track of whether there is a winner
-    public boolean winner = false;
-
     //Turn count for the game
     public int turnCount;
 
@@ -174,7 +171,7 @@ public class Game {
 
         System.out.println("Starting a new game with " + players.getSize() + " players.");
 
-        while (!winner) {
+        while (true) {
             turnCount++;
 
             // if we have drawn all the cards from the main pile, we need to reset and shuffle it.
@@ -203,9 +200,8 @@ public class Game {
             } while (choice < 0 || choice >= currentPlayer.getHand().size() || !isValidCard(currentPlayer.getHand().get(choice), currentCard));
 
             currentPlayer.playCard(hand.get(choice), playedPile);
-            winner = checkForWinner(curPlayerNode);
 
-            if (winner) {
+            if (checkForWinner(curPlayerNode)) {
                 System.out.println(currentPlayer.getName() + " wins!");
                 scanner.close();
                 System.exit(0);
