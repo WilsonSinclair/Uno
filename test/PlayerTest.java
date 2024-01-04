@@ -8,14 +8,14 @@ public class PlayerTest {
     public void hasPlayableCardWhenFirstCardIsDrawFourTest() {
         Game game = new Game(1);
         Game.setCurrentColor(Colors.COLORLESS);
-        assertTrue(Game.currentPlayer.hasPlayableCard(new WildCard(WildCardType.DrawFour), game));
+        assertTrue(Game.currentPlayer.hasPlayableCard(new WildCard(WildCardType.DrawFour), game.getCurrentColor()));
     }
 
     @Test
     public void hasPlayableCardWhenFirstCardIsWildCardTest() {
         Game game = new Game(1);
         Game.setCurrentColor(Colors.COLORLESS);
-        assertTrue(Game.currentPlayer.hasPlayableCard(new WildCard(WildCardType.Wild), game));
+        assertTrue(Game.currentPlayer.hasPlayableCard(new WildCard(WildCardType.Wild), game.getCurrentColor()));
     }
 
     @Test

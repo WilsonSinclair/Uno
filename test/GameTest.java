@@ -27,6 +27,11 @@ public class GameTest {
         assertTrue(Game.isValidCard(new WildCard(WildCardType.Wild), new NumberCard(Colors.BLUE, 0)));
         assertTrue(Game.isValidCard(new WildCard(WildCardType.DrawFour), new NumberCard(Colors.BLUE, 0)));
         assertTrue(Game.isValidCard(new NumberCard(Colors.BLUE, 8), new NumberCard(Colors.BLUE, 0)));
-        assertFalse(Game.isValidCard(new ActionCard(ActionType.Reverse, Colors.RED), new NumberCard(Colors.GREEN, 2)));
+    }
+
+    @Test
+    public void isNotValidCardTest() {
+        Game.setCurrentColor(Colors.BLUE);
+        assertFalse(Game.isValidCard(new ActionCard(ActionType.Reverse, Colors.RED), new NumberCard(Colors.BLUE, 2)));
     }
 }

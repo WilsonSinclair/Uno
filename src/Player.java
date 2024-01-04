@@ -96,21 +96,20 @@ public class Player {
         hand.remove(card);
     }
 
-    public boolean hasPlayableCard(Card card, Game game) {
+    public boolean hasPlayableCard(Card card, Colors currentColor) {
         //If the first card in the game is a wild card or draw 4.
-        if (game.getCurrentColor() == Colors.COLORLESS) { return true; }
-        Colors color = game.getCurrentColor();
+        if (currentColor == Colors.COLORLESS) { return true; }
         ActionType type = card.getActionType();
         Integer number = card.getNumber();
         for (Card c : hand) {
             if (c.getClass() != ActionCard.class && c.getClass() != WildCard.class) {
-                if (c.getColor() == color || Objects.equals(c.getNumber(), number)) return true;
+                if (c.getColor() == currentColor || Objects.equals(c.getNumber(), number)) return true;
             }
             if (c.getClass() == ActionCard.class) {
-                if (c.getColor() == color || c.getActionType() == type) return true;
+                if (c.getColor() == currentColor || c.getActionType() == type) return true;
             }
             if (c.getClass() == WildCard.class) {
-               if (c.getColor() == game.getCurrentColor() || c.getWildCardType() != null) return true;
+               if (c.getColor() == currentColor || c.getWildCardType() != null) return true;
             }
         }
         return false;

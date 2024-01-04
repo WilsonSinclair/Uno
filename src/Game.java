@@ -154,11 +154,11 @@ public class Game {
         currentColor = color;
     }
 
-    public static boolean isValidCard(Card card, Card currentCard) {
-        if (card.getColor() == currentColor || currentColor == Colors.COLORLESS || card.getColor() == currentCard.getColor()) return true;
-        else if (card.getClass() == WildCard.class) return true;
-        else if (card.getClass() == ActionCard.class) return card.getActionType() == currentCard.getActionType();
-        else if (card.getClass() == NumberCard.class) return card.getNumber().equals(currentCard.getNumber());
+    public static boolean isValidCard(Card newCard, Card currentCard) {
+        if (newCard.getColor() == currentColor || currentColor == Colors.COLORLESS || newCard.getColor() == currentCard.getColor()) return true;
+        else if (newCard.getClass() == WildCard.class) return true;
+        else if (newCard.getClass() == ActionCard.class) return newCard.getActionType() == currentCard.getActionType();
+        else if (newCard.getClass() == NumberCard.class) return newCard.getNumber().equals(currentCard.getNumber());
         else return false;
     }
 
@@ -184,7 +184,7 @@ public class Game {
             System.out.println("\nTurn: " + turnCount);
             System.out.println("\nCurrent card: " + currentCard + "\nCurrent color: " + currentColor);
 
-            if (!currentPlayer.hasPlayableCard(currentCard, this)) {
+            if (!currentPlayer.hasPlayableCard(currentCard, getCurrentColor())) {
                 System.out.println(currentPlayer.getName() + " has to draw a card.");
                 currentPlayer.drawFromMainPile(mainPile, 1);
                 rotatePlayerTurn();
